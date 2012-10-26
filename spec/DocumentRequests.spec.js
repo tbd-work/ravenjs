@@ -80,7 +80,7 @@ describe('DocumentRequests', function() {
 				expect(error).not.toBeDefined();
 				expect(data).toBeDefined();
 				expect(data['@metadata']['@id']).toBe('foo');
-				expect(data['@metadata'].ETag).toBe('0000-000-001');
+				expect(data['@metadata']['@etag']).toBe('0000-000-001');
 				expect(data['@metadata']['Raven-Entity-Name']).toBe('foos');
 				expect(data['@metadata']['Raven-Clr-Type']).toBe('foos.bar');
 				ravendb.done();
@@ -132,7 +132,7 @@ describe('DocumentRequests', function() {
 
 		it('should save using id from default id generator', function(done) {
 			request.settings.idFinder = function(doc) { return undefined; };
-			request.settings.idGenerator = function(doc, callback) {
+			request.settings.idGenerator = function(doc, settings, callback) {
 				callback(undefined, 101);
 			};
 
@@ -168,7 +168,7 @@ describe('DocumentRequests', function() {
 				foo: 'bar',
 				'@metadata': {
 					'@id': 'baz',
-					ETag: '0000-000-001'
+					'@etag': '0000-000-001'
 				}};
 			var ravendb = nock('http://localhost:81')
 				.put('/docs/baz', { foo: 'bar' })
@@ -176,7 +176,7 @@ describe('DocumentRequests', function() {
 
 			request.save('baz', doc, function(error) {
 				expect(error).not.toBeDefined();
-				expect(doc['@metadata'].ETag).toBe('0000-000-002');
+				expect(doc['@metadata']['@etag']).toBe('0000-000-002');
 				ravendb.done();
 				done();
 			});
@@ -188,7 +188,7 @@ describe('DocumentRequests', function() {
 				foo: 'bar',
 				'@metadata': {
 					'@id': 'baz',
-					ETag: '0000-000-001'
+					'@etag': '0000-000-001'
 				}};
 
 			var ravendb = nock('http://localhost:81')
