@@ -161,7 +161,7 @@ exports.connect = function(options) {
 	return new RavenClient(clientSettings);
 };
 
-RavenClient.prototype.advanced = function() { 
+exports.advanced = function() { 
 	return new DatabaseRequests(_(settings).clone());
 };
 
