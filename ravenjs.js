@@ -1,5 +1,6 @@
 var querystring = require('querystring'),
 	RavenClient = require('./lib/RavenClient'),
+	DatabaseRequests = require('./lib/DatabaseRequests'),
 	HiLoIdGenerator = require('./lib/HiLoIdGenerator'),
 	filter = require('./lib/filter')
 	errorCodes = require('./lib/errorCodes'),
@@ -158,6 +159,10 @@ exports.connect = function(options) {
 	}
 	
 	return new RavenClient(clientSettings);
+};
+
+RavenClient.prototype.advanced = function() { 
+	return new DatabaseRequests(_(settings).clone());
 };
 
 exports.create = function(typeName, collectionName) {
